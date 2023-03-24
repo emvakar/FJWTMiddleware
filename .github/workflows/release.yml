@@ -7,8 +7,20 @@ on:
   workflow_dispatch:
 
 jobs:
+  testing:
+    name: "Testing"
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Tests
+        run: swift test
+
   release-on-push:
-    runs-on: [builder, dockered]
+    name: "Create release"
+    if: ${{ success() }}
+    runs-on: ubuntu-latest
+    needs: [testing]
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
