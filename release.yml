@@ -1,0 +1,20 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+  workflow_dispatch:
+
+jobs:
+  release-on-push:
+    runs-on: [builder, dockered]
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: rymndhng/release-on-push-action@master
+        with:
+          bump_version_scheme: patch
+          use_github_release_notes: true
+          release_name: "Release <RELEASE_VERSION>"
+          max_commits: 100
